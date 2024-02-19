@@ -1,5 +1,9 @@
 import { createBrowserRouter, Outlet } from 'react-router-dom'
 
+import WhetherConnected from '../../utils/WhetherConnected'
+import WhetherNotConnected from '../../utils/WhetherNotConnected'
+import WhetherOrNotConnected from '../../utils/WhetherOrNotConnected'
+
 import Header from '../Header'
 import Footer from '../Footer'
 
@@ -25,22 +29,38 @@ const router = createBrowserRouter([
 		children: [
 			{
 				path: '/',
-				element: <Home />,
+				element: (
+					<WhetherOrNotConnected>
+						<Home />
+					</WhetherOrNotConnected>
+				),
 				loader: () => setTitlePage('Home Page'),
 			},
 			{
 				path: '/sign-in',
-				element: <SignIn />,
+				element: (
+					<WhetherNotConnected elseRedirectTo="/user">
+						<SignIn />
+					</WhetherNotConnected>
+				),
 				loader: () => setTitlePage('Sign In'),
 			},
 			{
 				path: '/user',
-				element: <User />,
+				element: (
+					<WhetherConnected elseRedirectTo="/sign-in">
+						<User />
+					</WhetherConnected>
+				),
 				loader: () => setTitlePage('User'),
 			},
 			{
 				path: '*',
-				element: <Error404 />,
+				element: (
+					<WhetherOrNotConnected>
+						<Error404 />
+					</WhetherOrNotConnected>
+				),
 				loader: () => setTitlePage('Error 404'),
 			},
 		],

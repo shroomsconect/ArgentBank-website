@@ -1,0 +1,48 @@
+@import '../../variable.scss';
+
+.ARGENTBANK-Account {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	border: 1px solid $border-transaction-color;
+	background-color: $bg-light-color;
+	width: 80%;
+	margin: 0 auto;
+	flex-direction: column;
+	padding: 1.5rem;
+	box-sizing: border-box;
+	text-align: left;
+	margin-bottom: 2rem;
+
+	&-content-wrapper {
+		width: 100%;
+		flex: 1;
+	}
+
+	&-title {
+		margin: 0;
+		padding: 0;
+		font-size: 1rem;
+		font-weight: normal;
+	}
+
+	&-amount {
+		margin: 0;
+		font-size: 2.5rem;
+		font-weight: bold;
+
+		&-description {
+			margin: 0;
+		}
+	}
+}
+
+@media (min-width: 720px) {
+	.ARGENTBANK-Account {
+		flex-direction: row;
+
+		&-content-wrapper.cta {
+			flex: 0;
+		}
+	}
+}

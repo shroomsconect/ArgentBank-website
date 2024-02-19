@@ -1,9 +1,21 @@
 /******** Variable ********/
-$bg-dark: #12002b;
-$active-link: #42b983;
+$bg-dark-color: #12002b;
+$bg-light-color: white;
+$border-transaction-color: black;
 
+$title-text-color: white;
+$active-link-color: #42b983;
+
+//Component Button
+$button-text-color: white;
+$button-bg-color: #00bc77;
+
+//Component Error
+$error-bg-color: #bb2626c7;
+$error-text-color: white;
+
+//Main colors
 $primary-color: #2c3e50;
-
-$secondary-color: white; //mostly, text color
-$tertiary-color: #f6f6f6; //mostly, background block and container
-$quaternary-color: black; //mostly, background footer
+$secondary-color: #00bc77;
+$tertiary-color: #222;
+$quaternary-color: #ccc;

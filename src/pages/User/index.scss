@@ -1,1 +1,13 @@
 @import '../../variable.scss';
+
+.ARGENTBANK-User {
+	&-header {
+		color: $title-text-color;
+		margin-bottom: 2rem;
+
+		& h2 {
+			font-size: 2rem;
+			margin: 1.34rem 0;
+		}
+	}
+}

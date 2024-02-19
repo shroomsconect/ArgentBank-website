@@ -1,0 +1,36 @@
+@import '../../variable.scss';
+
+.ARGENTBANK-Button,
+.ARGENTBANK-Button-transaction {
+	display: block;
+	cursor: pointer;
+	width: 100%;
+	padding: 8px;
+	font-size: 1.1rem;
+	font-weight: bold;
+	margin-top: 1rem;
+	border-color: $button-bg-color;
+	background-color: $button-bg-color;
+	color: $button-text-color;
+}
+
+.ARGENTBANK-Button-edit-button {
+	cursor: pointer;
+	border-color: $button-bg-color;
+	background-color: $button-bg-color;
+	color: $button-text-color;
+	font-weight: bold;
+	padding: 10px;
+}
+
+.ARGENTBANK-Button:disabled,
+.ARGENTBANK-Button-transaction:disabled,
+.ARGENTBANK-Button-edit-button:disabled {
+	cursor: wait;
+}
+
+@media (min-width: 720px) {
+	.ARGENTBANK-Button-transaction {
+		width: 200px;
+	}
+}

@@ -1,1 +1,47 @@
 @import '../../variable.scss';
+
+.ARGENTBANK-Error {
+	position: absolute;
+	top: 64px;
+	left: -420px;
+	padding: 10px;
+	min-height: 100px;
+	max-height: 400px;
+	width: 400px;
+	background-color: $error-bg-color;
+	border-radius: 15px;
+	z-index: 10;
+	transition: left 1s ease-in-out;
+
+	&-show {
+		left: 0;
+	}
+
+	&-delete {
+		display: block;
+		padding: 5px 5px 2px 5px;
+		margin: 0 0 0 auto;
+		cursor: pointer;
+		text-transform: uppercase;
+		font-size: 1.25rem;
+		font-weight: bold;
+		color: $error-text-color;
+		border: 3px dotted;
+		width: fit-content;
+	}
+
+	&-title {
+		font-size: 1.75rem;
+		font-weight: bold;
+		color: $error-text-color;
+	}
+
+	&-message {
+		color: $error-text-color;
+
+		&-container {
+			overflow-x: auto;
+			max-height: 260px;
+		}
+	}
+}

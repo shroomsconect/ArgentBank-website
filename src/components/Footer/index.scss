@@ -3,7 +3,7 @@
 .ARGENTBANK-Footer {
 	display: flex;
 	justify-content: center;
-	border-top: 2px solid #ccc;
+	border-top: 2px solid $quaternary-color;
 	padding: 2rem 0 1.5rem;
 
 	&-text {
