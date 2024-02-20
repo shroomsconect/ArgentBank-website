@@ -3,6 +3,7 @@ import axios from 'axios'
 const baseUrl = 'http://localhost:3001/api/v1/user'
 
 export const LOGIN_USER = 'LOGIN_USER'
+export const LOGOUT_USER = 'LOGOUT_USER'
 export const GET_USER = 'GET_USER'
 
 export const loginUser = (email, password, remember = false) => {
@@ -113,9 +114,19 @@ export const getUser = (token) => {
 	} else {
 		return (dispatch) => {
 			return dispatch({
-				type: GET_USER,
-				payload: {},
+				type: LOGOUT_USER,
 			})
 		}
+	}
+}
+
+export const logoutUser = () => {
+	return (dispatch) => {
+		if (localStorage.getItem('token')) {
+			localStorage.removeItem('token')
+		}
+		dispatch({
+			type: LOGOUT_USER,
+		})
 	}
 }

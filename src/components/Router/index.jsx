@@ -1,5 +1,10 @@
-import { createBrowserRouter, Outlet } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { createBrowserRouter, Outlet, Navigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
 
+import { logoutUser } from '../../actions/user.action'
+
+import { isEmptyData } from '../../utils'
 import WhetherConnected from '../../utils/WhetherConnected'
 import WhetherNotConnected from '../../utils/WhetherNotConnected'
 import WhetherOrNotConnected from '../../utils/WhetherOrNotConnected'
@@ -22,6 +27,30 @@ const Layout = () => (
 		<Footer />
 	</>
 )
+
+const SignOut = () => {
+	const [isNotConnected, setIsNotConnected] = useState(false)
+	const user = useSelector((state) => state.userReducer)
+	const dispatch = useDispatch()
+
+	useEffect(() => {
+		dispatch(logoutUser())
+		const token = localStorage.getItem('token')
+
+		if (isEmptyData(user)) {
+			if (!token) {
+				setIsNotConnected(true)
+			}
+		}
+		// eslint-disable-next-line
+	}, [user])
+
+	if (isNotConnected) {
+		return <Navigate to="/" replace />
+	}
+
+	return null
+}
 
 const router = createBrowserRouter([
 	{
@@ -64,6 +93,10 @@ const router = createBrowserRouter([
 				loader: () => setTitlePage('Error 404'),
 			},
 		],
+	},
+	{
+		path: '/sign-out',
+		element: <SignOut />,
 	},
 ])
 
