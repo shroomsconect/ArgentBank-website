@@ -1,13 +1,16 @@
+import { useState } from 'react'
 import { useSelector } from 'react-redux'
 
-import Account from '../../components/Account'
+import ModifyUsername from '../../components/ModifyUsername'
 import Button from '../../components/Button'
+import Account from '../../components/Account'
 
 import { isEmptyData } from '../../utils'
 
 import './index.scss'
 
 function User() {
+	const [isModifyUsername, setIsModifyUsername] = useState(false)
 	const user = useSelector((state) => state.userReducer)
 	const userFullName = !isEmptyData(user.firstName)
 		? `${user.firstName} ${user.lastName} !`
@@ -42,11 +45,16 @@ function User() {
 					<br />
 					{userFullName}
 				</h2>
-				<Button
-					title="Edit Name"
-					className="ARGENTBANK-User-edit-button"
-					isEdit={true}
-				/>
+				{isModifyUsername ? (
+					<ModifyUsername setIsModifyUsername={setIsModifyUsername} />
+				) : (
+					<Button
+						title="Edit Name"
+						className="ARGENTBANK-User-edit-button"
+						isEdit={true}
+						onClick={() => setIsModifyUsername(true)}
+					/>
+				)}
 			</div>
 			<h2 className="sr-only">Accounts</h2>
 			{accountList.map((account) => (

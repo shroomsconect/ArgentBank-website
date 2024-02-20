@@ -2,7 +2,7 @@ import PropTypes from 'prop-types'
 
 import './index.scss'
 
-function Button({ title, isEdit, isTransaction, isDisabled }) {
+function Button({ title, isEdit, isTransaction, isDisabled, onClick }) {
 	function getClass() {
 		if (isEdit) {
 			return 'ARGENTBANK-Button-edit-button'
@@ -14,7 +14,7 @@ function Button({ title, isEdit, isTransaction, isDisabled }) {
 	}
 
 	return (
-		<button className={getClass()} disabled={isDisabled}>
+		<button className={getClass()} disabled={isDisabled} onClick={onClick}>
 			{title}
 		</button>
 	)
@@ -25,12 +25,14 @@ Button.propTypes = {
 	isEdit: PropTypes.bool.isRequired,
 	isTransaction: PropTypes.bool.isRequired,
 	isDisabled: PropTypes.bool.isRequired,
+	onClick: PropTypes.func.isRequired,
 }
 
 Button.defaultProps = {
 	isEdit: false,
 	isTransaction: false,
 	isDisabled: false,
+	onClick: () => {},
 }
 
 export default Button

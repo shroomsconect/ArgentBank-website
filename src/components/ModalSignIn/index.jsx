@@ -18,6 +18,8 @@ function ModalSignIn() {
 	const errorHandling = (error) => {
 		if (error.message === LOGIN_USER) {
 			dispatch(addError(error.cause.message, error.cause.title))
+		} else {
+			dispatch(addError(error.message, 'Error to connect'))
 		}
 	}
 
