@@ -65,8 +65,6 @@ paths:
         - User Module
       summary: User Profile API
       description: API for fetching a user profile
-      #produces:
-       # - application/json
       responses:
         '200':
           description: User profile retrieved successully
@@ -101,6 +99,174 @@ paths:
           description: Invalid Fields
         '500':
           description: Internal Server Error
+  # New features demo (1/2) =========================== START
+  /accounts:
+    get:
+      security:
+        - Bearer: []
+      tags:
+        - Accounts
+      summary: Get all accounts
+      description: API for fetching all accounts of user bank
+      responses:
+        '200':
+          description: All accounts of user bank retrieved successully
+          schema:
+            $ref: '#/definitions/GetAccountsResponse'
+        '400':
+          description: Invalid Fields
+        '500':
+          description: Internal Server Error
+  /accounts/{accountId}/transactions:
+    get:
+      security:
+        - Bearer: []
+      tags:
+        - Accounts
+      summary: Get all transactions for account
+      description: API for fetching all transactions for account of user bank
+      parameters:
+        - name: accountId
+          in: path
+          description: The id of account that needs to be fetched the transactions
+          required: true
+          type: string
+      responses:
+        '200':
+          description: All transactions for account of user bank retrieved successully
+          schema:
+            $ref: '#/definitions/GetAccountTransactionsResponse'
+        '400':
+          description: Invalid Fields
+        '404':
+          description: Account not found
+        '500':
+          description: Internal Server Error
+  /accounts/{accountId}/transactionsPages/{pageNumber}:
+    get:
+      security:
+        - Bearer: []
+      tags:
+        - Accounts
+      summary: Get all transactions for account per page
+      description: API for fetching all transactions for account of user bank, sorted over 30 days per page
+      parameters:
+        - name: accountId
+          in: path
+          description: The id of account that needs to be fetched the transactions
+          required: true
+          type: string
+        - name: pageNumber
+          in: path
+          description: The number of the page that needs to be fetched the transactions
+          required: true
+          type: integer
+      responses:
+        '200':
+          description: All transactions for account of user bank retrieved successully
+          schema:
+            $ref: '#/definitions/GetAccountTransactionsResponse'
+        '400':
+          description: Invalid Fields
+        '404':
+          description: Page or account not found
+        '500':
+          description: Internal Server Error
+  /accounts/{accountId}/transactions/{transactionId}:
+    get:
+      security:
+        - Bearer: []
+      tags:
+        - Accounts
+      summary: Get a transaction by id for account
+      description: API for fetching a transaction for account of user bank
+      parameters:
+        - name: accountId
+          in: path
+          description: The id of account that needs to be fetched the transaction
+          required: true
+          type: string
+        - name: transactionId
+          in: path
+          description: The id of transaction that needs to be fetched
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Transaction by id for account of user bank retrieved successully
+          schema:
+            $ref: '#/definitions/GetAccountTransactionResponse'
+        '400':
+          description: Invalid Fields
+        '404':
+          description: Transaction or account not found
+        '500':
+          description: Internal Server Error
+    put:
+      security:
+        - Bearer: []
+      tags:
+        - Accounts
+      summary: Update a transaction by id for account
+      description: API for update a transaction for account of user bank
+      parameters:
+        - name: accountId
+          in: path
+          description: The id of account for the transaction that needs to be update
+          required: true
+          type: string
+        - name: transactionId
+          in: path
+          description: The id of transaction that needs to be update
+          required: true
+          type: string
+        - in: body
+          name: body
+          description: Update transaction attributes
+          required: true
+          schema:
+            $ref: '#/definitions/ModifyTransaction'
+      responses:
+        '200':
+          description: Transaction updated successfully
+          schema:
+            $ref: '#/definitions/GetAccountTransactionResponse'
+        '400':
+          description: Invalid Fields
+        '404':
+          description: Transaction or account not found
+        '500':
+          description: Internal Server Error
+  /accounts/{accountId}/transferTo/{accountId}:
+    post:
+      security:
+        - Bearer: []
+      tags:
+        - Accounts
+      summary: Transfer between two accounts
+      description: API for transfer between two accounts of user bank
+      parameters:
+        - name: accountId
+          in: path
+          description: The id of account that needs to be send the transfer and for the that needs to be the receiver
+          required: true
+          type: string
+        - in: body
+          name: body
+          description: Transfer transaction
+          required: true
+          schema:
+            $ref: '#/definitions/TransferTransaction'
+      responses:
+        '200':
+          description: All accounts of user bank retrieved successully
+          schema:
+            $ref: '#/definitions/DefaultResponse'
+        '400':
+          description: Invalid Fields
+        '500':
+          description: Internal Server Error
+  # New features demo (1/2) =========================== END
 securityDefinitions:
   Bearer:
     type: apiKey
@@ -156,3 +322,123 @@ definitions:
     properties:
       userName:
         type: string
+  # New features demo (2/2) =========================== START
+  DefaultResponse:
+    type: object
+    properties:
+      status:
+        type: integer
+      message:
+        type: string
+  Account:
+    type: object
+    properties:
+      id:
+        type: string
+      account_number:
+        type: string
+      type_mame:
+        type: string
+      balance:
+        type: number
+        format: float
+      currency:
+        type: string
+  GetAccountsResponse:
+    type: object
+    properties:
+      status:
+        type: integer
+      message:
+        type: string
+      body:
+        type: array
+        items:
+          $ref: '#/definitions/Account'
+  Transactions:
+    type: array
+    items:
+      type: object
+      properties:
+        id:
+          type: string
+        type_mame:
+          type: string
+        category:
+          type: string
+        date:
+          type: string
+          format: date
+        title:
+          type: string
+        amount:
+          type: number
+          format: float
+  Transaction:
+    type: object
+    properties:
+      id:
+        type: string
+      type_mame:
+        type: string
+      category:
+        type: string
+      date:
+        type: string
+        format: date
+      title:
+        type: string
+      amount:
+        type: number
+        format: float
+      reason:
+        type: string
+      note:
+        type: string
+  ModifyTransaction:
+    type: object
+    properties:
+      category:
+        type: string
+      reason:
+        type: string
+      note:
+        type: string
+  TransferTransaction:
+    type: object
+    properties:
+      type_mame:
+        type: string
+      category:
+        type: string
+      date:
+        type: string
+        format: date
+      title:
+        type: string
+      amount:
+        type: number
+        format: float
+      reason:
+        type: string
+      note:
+        type: string
+  GetAccountTransactionsResponse:
+    type: object
+    properties:
+      status:
+        type: integer
+      message:
+        type: string
+      body:
+        $ref: '#/definitions/Transactions'
+  GetAccountTransactionResponse:
+    type: object
+    properties:
+      status:
+        type: integer
+      message:
+        type: string
+      body:
+        $ref: '#/definitions/Transaction'
+  # New features demo (2/2) =========================== END
