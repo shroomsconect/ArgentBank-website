@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Navigate } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 
 import ModifyUsername from '../../components/ModifyUsername'
@@ -6,15 +7,23 @@ import Button from '../../components/Button'
 import Account from '../../components/Account'
 
 import { isEmptyData } from '../../utils'
+import { useIsConnected } from '../../utils/hooks'
 
 import './index.scss'
 
 function User() {
 	const [isModifyUsername, setIsModifyUsername] = useState(false)
 	const user = useSelector((state) => state.userReducer)
-	const userFullName = !isEmptyData(user.firstName)
-		? `${user.firstName} ${user.lastName} !`
-		: '...'
+
+	const [isConnected, isRedirect] = useIsConnected('mustBeConnected', true)
+	if (isRedirect) {
+		return <Navigate to="/sign-in" replace />
+	}
+
+	const userFullName =
+		!isEmptyData(user.firstName) && !isEmptyData(user.firstName)
+			? `${user.firstName} ${user.lastName} !`
+			: '...'
 
 	const accountList = [
 		{
@@ -45,7 +54,7 @@ function User() {
 					<br />
 					{userFullName}
 				</h2>
-				{isModifyUsername ? (
+				{isConnected && isModifyUsername ? (
 					<ModifyUsername setIsModifyUsername={setIsModifyUsername} />
 				) : (
 					<Button
@@ -57,14 +66,15 @@ function User() {
 				)}
 			</div>
 			<h2 className="sr-only">Accounts</h2>
-			{accountList.map((account) => (
-				<Account
-					key={account.id}
-					title={account.title}
-					amount={account.amount}
-					description={account.description}
-				/>
-			))}
+			{isConnected &&
+				accountList.map((account) => (
+					<Account
+						key={account.id}
+						title={account.title}
+						amount={account.amount}
+						description={account.description}
+					/>
+				))}
 		</main>
 	)
 }

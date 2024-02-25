@@ -1,5 +1,3 @@
-import './index.scss'
-
 import Hero from '../../components/Hero'
 import bgImg from '../../assets/bank-tree.webp'
 
@@ -7,6 +5,8 @@ import Feature from '../../components/Feature'
 import iconChat from '../../assets/icon-chat.webp'
 import iconMoney from '../../assets/icon-money.webp'
 import iconSecurity from '../../assets/icon-security.webp'
+
+import './index.scss'
 
 function Home() {
 	const heroSubtitleList = [

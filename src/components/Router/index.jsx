@@ -1,13 +1,10 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { createBrowserRouter, Outlet, Navigate } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 
 import { logoutUser } from '../../actions/user.action'
 
-import { isEmptyData } from '../../utils'
-import WhetherConnected from '../../utils/WhetherConnected'
-import WhetherNotConnected from '../../utils/WhetherNotConnected'
-import WhetherOrNotConnected from '../../utils/WhetherOrNotConnected'
+import { useIsConnected } from '../../utils/hooks'
 
 import Header from '../Header'
 import Footer from '../Footer'
@@ -29,23 +26,16 @@ const Layout = () => (
 )
 
 const SignOut = () => {
-	const [isNotConnected, setIsNotConnected] = useState(false)
-	const user = useSelector((state) => state.userReducer)
 	const dispatch = useDispatch()
+
+	const [isConnected, isRedirect] = useIsConnected('mustBeConnected', true)
 
 	useEffect(() => {
 		dispatch(logoutUser())
-		const token = localStorage.getItem('token')
-
-		if (isEmptyData(user)) {
-			if (!token) {
-				setIsNotConnected(true)
-			}
-		}
 		// eslint-disable-next-line
-	}, [user])
+	}, [isConnected])
 
-	if (isNotConnected) {
+	if (isRedirect) {
 		return <Navigate to="/" replace />
 	}
 
@@ -58,38 +48,22 @@ const router = createBrowserRouter([
 		children: [
 			{
 				path: '/',
-				element: (
-					<WhetherOrNotConnected>
-						<Home />
-					</WhetherOrNotConnected>
-				),
+				element: <Home />,
 				loader: () => setTitlePage('Home Page'),
 			},
 			{
 				path: '/sign-in',
-				element: (
-					<WhetherNotConnected elseRedirectTo="/user">
-						<SignIn />
-					</WhetherNotConnected>
-				),
+				element: <SignIn />,
 				loader: () => setTitlePage('Sign In'),
 			},
 			{
 				path: '/user',
-				element: (
-					<WhetherConnected elseRedirectTo="/sign-in">
-						<User />
-					</WhetherConnected>
-				),
+				element: <User />,
 				loader: () => setTitlePage('User'),
 			},
 			{
 				path: '*',
-				element: (
-					<WhetherOrNotConnected>
-						<Error404 />
-					</WhetherOrNotConnected>
-				),
+				element: <Error404 />,
 				loader: () => setTitlePage('Error 404'),
 			},
 		],

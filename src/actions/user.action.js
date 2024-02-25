@@ -31,8 +31,8 @@ export const loginUser = (email, password, remember = false) => {
 
 export const getUser = (token) => {
 	if (token) {
-		return (dispatch) => {
-			return axios
+		return async (dispatch) => {
+			return await axios
 				.post(baseUrl + '/profile', null, {
 					headers: {
 						Authorization: `Bearer ${token}`,

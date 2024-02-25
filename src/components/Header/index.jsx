@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux'
 import Error from '../Error'
 
 import { isEmptyData } from '../../utils'
+import { useIsConnected } from '../../utils/hooks'
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCircleUser } from '@fortawesome/free-solid-svg-icons'
@@ -15,6 +16,7 @@ import './index.scss'
 
 function Header() {
 	const user = useSelector((state) => state.userReducer)
+	const isConnected = useIsConnected('mustBeConnectedOrNot')
 
 	return (
 		<header className="ARGENTBANK-Header">
@@ -29,15 +31,7 @@ function Header() {
 					<h1 className="sr-only">Argent Bank</h1>
 				</NavLink>
 				<div>
-					{isEmptyData(user) ? (
-						<NavLink
-							to="/sign-in"
-							className="ARGENTBANK-Header-nav-item"
-						>
-							<FontAwesomeIcon icon={faCircleUser} />
-							&nbsp;Sign In
-						</NavLink>
-					) : (
+					{isConnected ? (
 						<>
 							<NavLink
 								to="/user"
@@ -57,6 +51,14 @@ function Header() {
 								&nbsp;Sign Out
 							</NavLink>
 						</>
+					) : (
+						<NavLink
+							to="/sign-in"
+							className="ARGENTBANK-Header-nav-item"
+						>
+							<FontAwesomeIcon icon={faCircleUser} />
+							&nbsp;Sign In
+						</NavLink>
 					)}
 				</div>
 			</nav>
